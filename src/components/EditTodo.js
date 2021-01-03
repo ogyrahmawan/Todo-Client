@@ -1,7 +1,5 @@
-import axios from 'axios'
 import React from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
-import Swal from 'sweetalert2'
 
 class EditTodo extends React.Component {
     constructor(props) {
@@ -38,38 +36,19 @@ class EditTodo extends React.Component {
     editTodo (event) {
         event.preventDefault()
         let payload = {
+            id : this.props.todo.id,
             title: this.state.title,
             description: this.state.description,
             due_date: this.state.due_date
         }
-        let access_token = localStorage.getItem('access_token')
-        let id = this.props.todo.id
-        axios({
-            url: `/todos/${id}`,
-            method: 'PUT',
-            data: {
-                title: payload.title,
-                description: payload.description,
-                due_date: payload.due_date
-            },
-            headers: {
-                access_token
-            }
-          })
-            .then(res => {
-              Swal.fire(' Edit ToDo Success')
-              console.log(res.data)
-            })
-            .catch(err => {
-              console.log(err)
-            })
+        this.props.editTodoHandle(payload)
         this.handleClose()
     }
 
     render() {
         return (
             <>
-            <i onClick={this.handleShow} className="fas fa-edit"></i>
+            <i onClick={this.handleShow} className="btn-action fas fa-edit"></i>
       
             <Modal show={this.state.show} onHide={this.handleClose}>
               <Modal.Header closeButton>

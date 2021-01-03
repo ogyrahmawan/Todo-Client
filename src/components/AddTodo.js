@@ -1,7 +1,5 @@
-import axios from 'axios'
 import React from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
-import Swal from 'sweetalert2'
 
 class AddTodo extends React.Component {
     constructor(props) {
@@ -41,37 +39,17 @@ class AddTodo extends React.Component {
             description: this.state.description,
             due_date: this.state.due_date
         }
-        let access_token = localStorage.getItem('access_token')
-        axios({
-            url: '/todos',
-            method: 'POST',
-            data: {
-                title: payload.title,
-                description: payload.description,
-                due_date: payload.due_date
-            },
-            headers: {
-                access_token
-            }
-          })
-            .then(res => {
-              Swal.fire(' Add ToDo Success')
-              console.log(res.data)
-              this.props.fetchData()
-              this.props.history.push('/')
-            })
-            .catch(err => {
-              console.log(err)
-            })
+        this.props.addtodoHandle(payload)
         this.handleClose()
+        
     }
 
     render() {
         return (
             <>
-            <Button variant="primary" onClick={this.handleShow}>
+            <button className="btn-plus btn-primary" onClick={this.handleShow}>
             <i className="fas fa-plus"></i>
-            </Button>
+            </button>
       
             <Modal show={this.state.show} onHide={this.handleClose}>
               <Modal.Header closeButton>
